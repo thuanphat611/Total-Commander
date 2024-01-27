@@ -28,71 +28,81 @@
                 Grid.Column="0" 
                 BorderBrush="Gray" 
                 BorderThickness="1">
-                <DockPanel 
-                    LastChildFill="True"
+                <ScrollViewer
+                    HorizontalScrollBarVisibility="Auto"
+                    VerticalScrollBarVisibility="Disabled"
                     >
-                    <WrapPanel
-                        DockPanel.Dock="Top"
-                        Background="LightGray"
-                        Orientation="Horizontal"
+                    <DockPanel 
+                        LastChildFill="True"
                         >
-                        <ComboBox
-                            x:Name="leftComboBox"
-                            Margin="5,0,10,0"
-                            VerticalAlignment="Center"
-                            Loaded="ComboBox_Loaded"
+                        <WrapPanel
+                            DockPanel.Dock="Top"
+                            Background="LightGray"
+                            Orientation="Horizontal"
+                            >
+                            <ComboBox
+                                x:Name="leftComboBox"
+                                Margin="2,0,10,0"
+                                VerticalAlignment="Center"
+                                Loaded="ComboBox_Loaded"
                             
-                            >   
+                                >
 
-                        </ComboBox>
-                        <Label
-                            VerticalAlignment="Center"
-                            >   
-                            path
-                        </Label>
-                    </WrapPanel>
+                            </ComboBox>
+                            <Label
+                                VerticalAlignment="Center"
+                                >
+                                path
+                            </Label>
+                        </WrapPanel>
 
-                    <ListView
-                        DockPanel.Dock="Bottom"
-                        >
+                        <ListView
+                            DockPanel.Dock="Bottom"
+                            >
 
-                    </ListView>
-                </DockPanel>
+                        </ListView>
+                    </DockPanel>
+                </ScrollViewer>
             </Border>
 
             <Border 
                 Grid.Column="1" 
                 BorderBrush="Gray" 
                 BorderThickness="0,1,1,1">
-                <DockPanel 
-                    LastChildFill="True"
+                <ScrollViewer
+                    HorizontalScrollBarVisibility="Auto"
+                    VerticalScrollBarVisibility="Disabled"
                     >
-                    <WrapPanel
-                        DockPanel.Dock="Top"
-                        Background="LightGray"
-                        Orientation="Horizontal"
+                    <DockPanel 
+                        LastChildFill="True"
                         >
-                        <ComboBox
-                            x:Name="rightComboBox"
-                            Margin="5,0,10,0"
-                            VerticalAlignment="Center"
-                            Loaded="ComboBox_Loaded"
+                        <WrapPanel
+                            DockPanel.Dock="Top"
+                            Background="LightGray"
+                            Orientation="Horizontal"
+                            >
+                            <ComboBox
+                                x:Name="rightComboBox"
+                                Margin="2,0,10,0"
+                                VerticalAlignment="Center"
+                                Loaded="ComboBox_Loaded"
+                                >
+
+                            </ComboBox>
+                            <Label
+                                VerticalAlignment="Center"
+                                >
+                                path
+                            </Label>
+                        </WrapPanel>
+
+                        <ListView
+                            DockPanel.Dock="Bottom"
                             >
 
-                        </ComboBox>
-                        <Label
-                            VerticalAlignment="Center"
-                            >
-                            path
-                        </Label>
-                    </WrapPanel>
-
-                    <ListView
-                        DockPanel.Dock="Bottom"
-                        >
-
-                    </ListView>
-                </DockPanel>
+                        </ListView>
+                    </DockPanel>
+                </ScrollViewer>
             </Border>
         </Grid>
     </DockPanel>
