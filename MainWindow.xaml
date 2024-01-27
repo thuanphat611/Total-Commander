@@ -6,7 +6,94 @@
         xmlns:local="clr-namespace:Assignment01"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
 
-    </Grid>
+    <DockPanel
+        LastChildFill="True"
+        >
+        <WrapPanel
+            Height="60"
+            DockPanel.Dock="Top"
+            Background="Wheat"
+            >
+            
+        </WrapPanel>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50*"/>
+                <ColumnDefinition Width="50*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border 
+                Grid.Column="0" 
+                BorderBrush="Gray" 
+                BorderThickness="1">
+                <DockPanel 
+                    LastChildFill="True"
+                    >
+                    <WrapPanel
+                        DockPanel.Dock="Top"
+                        Background="LightGray"
+                        Orientation="Horizontal"
+                        >
+                        <ComboBox
+                            x:Name="leftComboBox"
+                            Margin="5,0,10,0"
+                            VerticalAlignment="Center"
+                            Loaded="ComboBox_Loaded"
+                            
+                            >   
+
+                        </ComboBox>
+                        <Label
+                            VerticalAlignment="Center"
+                            >   
+                            path
+                        </Label>
+                    </WrapPanel>
+
+                    <ListView
+                        DockPanel.Dock="Bottom"
+                        >
+
+                    </ListView>
+                </DockPanel>
+            </Border>
+
+            <Border 
+                Grid.Column="1" 
+                BorderBrush="Gray" 
+                BorderThickness="0,1,1,1">
+                <DockPanel 
+                    LastChildFill="True"
+                    >
+                    <WrapPanel
+                        DockPanel.Dock="Top"
+                        Background="LightGray"
+                        Orientation="Horizontal"
+                        >
+                        <ComboBox
+                            x:Name="rightComboBox"
+                            Margin="5,0,10,0"
+                            VerticalAlignment="Center"
+                            Loaded="ComboBox_Loaded"
+                            >
+
+                        </ComboBox>
+                        <Label
+                            VerticalAlignment="Center"
+                            >
+                            path
+                        </Label>
+                    </WrapPanel>
+
+                    <ListView
+                        DockPanel.Dock="Bottom"
+                        >
+
+                    </ListView>
+                </DockPanel>
+            </Border>
+        </Grid>
+    </DockPanel>
 </Window>
