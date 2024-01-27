@@ -45,11 +45,12 @@
                                 Margin="2,0,10,0"
                                 VerticalAlignment="Center"
                                 Loaded="ComboBox_Loaded"
-                            
+                                SelectionChanged="LeftComboBox_SelectionChanged"
                                 >
 
                             </ComboBox>
                             <Label
+                                x:Name="leftPathLabel"
                                 VerticalAlignment="Center"
                                 >
                                 path
@@ -57,9 +58,18 @@
                         </WrapPanel>
 
                         <ListView
+                            x:Name="leftListView"
                             DockPanel.Dock="Bottom"
+                            MouseDoubleClick="LeftListView_MouseDoubleClick"
                             >
-
+                            <ListView.View>
+                                <GridView
+                                    x:Name="leftGridView">
+                                    <GridViewColumn Header="Name" Width="100" DisplayMemberBinding="{Binding Name}"/>
+                                    <GridViewColumn Header="Type" Width="100" DisplayMemberBinding="{Binding Type}"/>
+                                    <GridViewColumn Header="Size" Width="100" DisplayMemberBinding="{Binding Size}"/>
+                                </GridView>
+                            </ListView.View>
                         </ListView>
                     </DockPanel>
                 </ScrollViewer>
@@ -86,10 +96,12 @@
                                 Margin="2,0,10,0"
                                 VerticalAlignment="Center"
                                 Loaded="ComboBox_Loaded"
+                                SelectionChanged="RightComboBox_SelectionChanged"
                                 >
 
                             </ComboBox>
                             <Label
+                                x:Name="rightPathLabel"
                                 VerticalAlignment="Center"
                                 >
                                 path
@@ -97,9 +109,18 @@
                         </WrapPanel>
 
                         <ListView
+                            x:Name="rightListView"
                             DockPanel.Dock="Bottom"
+                            MouseDoubleClick="RightListView_MouseDoubleClick"
                             >
-
+                            <ListView.View>
+                                <GridView
+                                    x:Name="rightGridView">
+                                    <GridViewColumn Header="Name" Width="100" DisplayMemberBinding="{Binding Name}"/>
+                                    <GridViewColumn Header="Type" Width="100" DisplayMemberBinding="{Binding Type}"/>
+                                    <GridViewColumn Header="Size" Width="100" DisplayMemberBinding="{Binding Size}"/>
+                                </GridView>
+                            </ListView.View>
                         </ListView>
                     </DockPanel>
                 </ScrollViewer>
