@@ -49,7 +49,7 @@
                                 Margin="2,0,10,0"
                                 VerticalAlignment="Center"
                                 Loaded="ComboBox_Loaded"
-                                SelectionChanged="LeftComboBox_SelectionChanged"
+                                SelectionChanged="ComboBox_SelectionChanged"
                                 >
 
                             </ComboBox>
@@ -57,14 +57,13 @@
                                 x:Name="leftPathLabel"
                                 VerticalAlignment="Center"
                                 >
-                                path
                             </Label>
                         </WrapPanel>
 
                         <ListView
                             x:Name="leftListView"
                             DockPanel.Dock="Bottom"
-                            MouseDoubleClick="LeftListView_MouseDoubleClick"
+                            MouseDoubleClick="ListView_MouseDoubleClick"
                             
                             >
                             <ListView.View>
@@ -102,7 +101,7 @@
                                 Margin="2,0,10,0"
                                 VerticalAlignment="Center"
                                 Loaded="ComboBox_Loaded"
-                                SelectionChanged="RightComboBox_SelectionChanged"
+                                SelectionChanged="ComboBox_SelectionChanged"
                                 >
 
                             </ComboBox>
@@ -110,14 +109,13 @@
                                 x:Name="rightPathLabel"
                                 VerticalAlignment="Center"
                                 >
-                                path
                             </Label>
                         </WrapPanel>
 
                         <ListView
                             x:Name="rightListView"
                             DockPanel.Dock="Bottom"
-                            MouseDoubleClick="RightListView_MouseDoubleClick"
+                            MouseDoubleClick="ListView_MouseDoubleClick"
                             >
                             <ListView.View>
                                 <GridView

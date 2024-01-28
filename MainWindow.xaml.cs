@@ -16,6 +16,7 @@ namespace Assignment01
     {
         string leftCurrentPath;
         string rightCurrentPath;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -56,11 +57,18 @@ namespace Assignment01
 
         private void LoadDirectory(int position,  string path)
         {
-            Label pathLabel = (Label)rightPathLabel;
+            //position: 0:left ListView, 1:right ListView
+            Label pathLabel;
             if (position == 0)
+            {
+                pathLabel = (Label)leftPathLabel;
                 leftListView.Items.Clear();
+            }
             else
+            {
+                pathLabel = (Label)rightPathLabel;
                 rightListView.Items.Clear();
+            }
 
             try
             {
@@ -115,45 +123,35 @@ namespace Assignment01
             }
         }
 
-        private void LeftComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ComboBox comboBox = (ComboBox)sender;
             DriveInfo selectedItem = (DriveInfo)comboBox.SelectedItem;
             string path = selectedItem.Name;
-            LoadDirectory(0, path);
+            if (comboBox.Name == "leftComboBox")
+                LoadDirectory(0, path);
+            else
+                LoadDirectory(1, path);
         }
 
-        private void RightComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ListView_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            ComboBox comboBox = (ComboBox)sender;
-            DriveInfo selectedItem = (DriveInfo)comboBox.SelectedItem;
-            string path = selectedItem.Name;
-            LoadDirectory(1, path);
-        }
-
-        private void LeftListView_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            if (leftListView.SelectedItem != null)
+            ListView directoryList = (ListView)sender;
+            if (directoryList.SelectedItem != null)
             {
-                dynamic selectedItem = ((ListViewItem)leftListView.SelectedItem).Content;
-                string path = System.IO.Path.Combine(leftCurrentPath, selectedItem.Name);
+                dynamic selectedItem = ((ListViewItem)directoryList.SelectedItem).Content;
+                string path;
+
+                if (directoryList.Name == "leftListView")
+                    path = System.IO.Path.Combine(leftCurrentPath, selectedItem.Name);
+                else
+                    path = System.IO.Path.Combine(rightCurrentPath, selectedItem.Name);
 
                 if (selectedItem.Type == "Folder")
-                    LoadDirectory(0, path);
-                else if (selectedItem.Type == "File") 
-                    OpenFile(path);
-            }
-        }
-
-        private void RightListView_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            if (rightListView.SelectedItem != null)
-            {
-                dynamic selectedItem = ((ListViewItem)rightListView.SelectedItem).Content;
-                string path = System.IO.Path.Combine(rightCurrentPath, selectedItem.Name);
-
-                if (selectedItem.Type == "Folder")
-                    LoadDirectory(1, path);
+                    if (directoryList.Name == "leftListView")
+                        LoadDirectory(0, path);
+                    else
+                        LoadDirectory(1, path);
                 else if (selectedItem.Type == "File")
                     OpenFile(path);
             }
