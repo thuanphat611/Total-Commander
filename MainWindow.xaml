@@ -14,7 +14,7 @@
         <WrapPanel
             Height="60"
             DockPanel.Dock="Top"
-            Background="Wheat"
+            Background="FloralWhite"
             >
             
         </WrapPanel>

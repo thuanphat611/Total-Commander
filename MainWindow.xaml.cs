@@ -54,19 +54,18 @@ namespace Assignment01
             }
         }
 
-        private void LeftComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void LoadDirectory(int position,  string path)
         {
-            ComboBox comboBox = (ComboBox)sender;
-            DriveInfo selectedItem = (DriveInfo)comboBox.SelectedItem;
-            string path = selectedItem.Name;
-            Label pathLabel = (Label)leftPathLabel;
-            ListView directoryView = (ListView)leftListView;
+            Label pathLabel = (Label)rightPathLabel;
+            if (position == 0)
+                leftListView.Items.Clear();
+            else
+                rightListView.Items.Clear();
 
-            if (selectedItem != null && selectedItem.IsReady)
+            try
             {
-                directoryView.Items.Clear();
-                DirectoryInfo rootDirectory = selectedItem.RootDirectory;
-                FileSystemInfo[] items = rootDirectory.GetFileSystemInfos();
+                DirectoryInfo folder = new DirectoryInfo(path);
+                FileSystemInfo[] items = folder.GetFileSystemInfos();
 
                 foreach (FileSystemInfo item in items)
                 {
@@ -78,16 +77,50 @@ namespace Assignment01
                         Size = (item is FileInfo file) ? GetFileSizeString(file.Length) : "",
                         Date = $"{item.CreationTime.Day}-{item.CreationTime.Month}-{item.CreationTime.Year}"
                     };
-                    directoryView.Items.Add(listViewItem);
+                    if (position == 0)
+                        leftListView.Items.Add(listViewItem);
+                    else
+                        rightListView.Items.Add(listViewItem);
+                }
+
+                if (position == 0)
+                    leftCurrentPath = path;
+                else
+                    rightCurrentPath = path;
+                if (pathLabel != null)
+                {
+                    pathLabel.Content = path;
                 }
             }
-
-            if (pathLabel != null)
+            catch (Exception ex)
             {
-                leftCurrentPath = path;
-                pathLabel.Content = leftCurrentPath;
-                //add to queue
+                //ignore
             }
+        }
+
+        private void OpenFile(string path)
+        {
+            try
+            {
+                System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo
+                {
+                    FileName = path,
+                    UseShellExecute = true
+                };
+                System.Diagnostics.Process.Start(psi);
+            }
+            catch (Exception ex)
+            {
+                //ignore
+            }
+        }
+
+        private void LeftComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox comboBox = (ComboBox)sender;
+            DriveInfo selectedItem = (DriveInfo)comboBox.SelectedItem;
+            string path = selectedItem.Name;
+            LoadDirectory(0, path);
         }
 
         private void RightComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -95,158 +128,34 @@ namespace Assignment01
             ComboBox comboBox = (ComboBox)sender;
             DriveInfo selectedItem = (DriveInfo)comboBox.SelectedItem;
             string path = selectedItem.Name;
-            Label pathLabel = (Label)rightPathLabel;
-            ListView directoryView = (ListView)rightListView;
-
-            if (selectedItem != null && selectedItem.IsReady)
-            {
-                directoryView.Items.Clear();
-                DirectoryInfo rootDirectory = selectedItem.RootDirectory;
-                FileSystemInfo[] items = rootDirectory.GetFileSystemInfos();
-
-                foreach (FileSystemInfo item in items)
-                {
-                    ListViewItem listViewItem = new ListViewItem();
-                    listViewItem.Content = new
-                    {
-                        Name = item.Name,
-                        Type = item is DirectoryInfo ? "Folder" : "File",
-                        Size = (item is FileInfo file) ? GetFileSizeString(file.Length) : "",
-                        Date = $"{item.CreationTime.Day}-{item.CreationTime.Month}-{item.CreationTime.Year}"
-                    };
-                    directoryView.Items.Add(listViewItem);
-                }
-            }
-
-            if (pathLabel != null)
-            {
-                rightCurrentPath = path;
-                pathLabel.Content = rightCurrentPath;
-                //add to queue
-            }
+            LoadDirectory(1, path);
         }
 
         private void LeftListView_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            Label pathLabel = (Label)leftPathLabel;
-
             if (leftListView.SelectedItem != null)
             {
                 dynamic selectedItem = ((ListViewItem)leftListView.SelectedItem).Content;
+                string path = System.IO.Path.Combine(leftCurrentPath, selectedItem.Name);
 
                 if (selectedItem.Type == "Folder")
-                {
-                    string subFolderPath = System.IO.Path.Combine(leftCurrentPath, selectedItem.Name);
-
-                    leftListView.Items.Clear();
-                    try
-                    {
-                        DirectoryInfo folder = new DirectoryInfo(subFolderPath);
-                        FileSystemInfo[] items = folder.GetFileSystemInfos();
-
-                        foreach (FileSystemInfo item in items)
-                        {
-                            ListViewItem listViewItem = new ListViewItem();
-                            listViewItem.Content = new
-                            {
-                                Name = item.Name,
-                                Type = item is DirectoryInfo ? "Folder" : "File",
-                                Size = (item is FileInfo file) ? GetFileSizeString(file.Length) : "",
-                                Date = $"{item.CreationTime.Day}-{item.CreationTime.Month}-{item.CreationTime.Year}"
-                            };
-                            leftListView.Items.Add(listViewItem);
-                        }
-
-                        leftCurrentPath = subFolderPath;
-                        if (pathLabel != null)
-                        {
-                            pathLabel.Content = subFolderPath;
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        //ignore
-                    }
-                }
-                else if (selectedItem.Type == "File")
-                {
-                    string filePath = System.IO.Path.Combine(leftCurrentPath, selectedItem.Name);
-                    try
-                    {
-                        System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo
-                        {
-                            FileName = filePath,
-                            UseShellExecute = true
-                        };
-                        System.Diagnostics.Process.Start(psi);
-                    }
-                    catch (Exception ex)
-                    {
-                        //ignore
-                    }
-                }
+                    LoadDirectory(0, path);
+                else if (selectedItem.Type == "File") 
+                    OpenFile(path);
             }
         }
 
         private void RightListView_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            Label pathLabel = (Label)rightPathLabel;
-
             if (rightListView.SelectedItem != null)
             {
                 dynamic selectedItem = ((ListViewItem)rightListView.SelectedItem).Content;
+                string path = System.IO.Path.Combine(rightCurrentPath, selectedItem.Name);
 
                 if (selectedItem.Type == "Folder")
-                {
-                    string subFolderPath = System.IO.Path.Combine(rightCurrentPath, selectedItem.Name);
-
-                    rightListView.Items.Clear();
-                    try
-                    {
-                        DirectoryInfo folder = new DirectoryInfo(subFolderPath);
-                        FileSystemInfo[] items = folder.GetFileSystemInfos();
-
-                        foreach (FileSystemInfo item in items)
-                        {
-                            ListViewItem listViewItem = new ListViewItem();
-                            listViewItem.Content = new
-                            {
-                                Name = item.Name,
-                                Type = item is DirectoryInfo ? "Folder" : "File",
-                                Size = (item is FileInfo file) ? GetFileSizeString(file.Length) : "",
-                                Date = $"{item.CreationTime.Day}-{item.CreationTime.Month}-{item.CreationTime.Year}"
-                            };
-                            rightListView.Items.Add(listViewItem);
-                        }
-
-                        rightCurrentPath = subFolderPath;
-                        if (pathLabel != null)
-                        {
-                            pathLabel.Content = subFolderPath;
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        //ignore
-                    }
-                }
+                    LoadDirectory(1, path);
                 else if (selectedItem.Type == "File")
-                {
-                    string filePath = System.IO.Path.Combine(rightCurrentPath, selectedItem.Name);
-                    try
-                    {
-                        System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo
-                        {
-                            FileName = filePath,
-                            UseShellExecute = true
-                        };
-                        System.Diagnostics.Process.Start(psi);
-                    }
-                    catch (Exception ex)
-                    {
-                        //ignore
-                    }
-                }
+                    OpenFile(path);
             }
         }
 
