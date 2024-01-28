@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Assignment01"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="21127665 - Assignment01" Height="450" Width="800"
+        SizeChanged="ListView_SizeChanged">
 
     <DockPanel
         LastChildFill="True"
@@ -18,7 +19,9 @@
             
         </WrapPanel>
 
-        <Grid>
+        <Grid
+            x:Name="bodyGrid"
+            >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="50*"/>
                 <ColumnDefinition Width="50*"/>
@@ -29,6 +32,7 @@
                 BorderBrush="Gray" 
                 BorderThickness="1">
                 <ScrollViewer
+                    x:Name="directoryScrollView"
                     HorizontalScrollBarVisibility="Auto"
                     VerticalScrollBarVisibility="Disabled"
                     >
@@ -61,13 +65,15 @@
                             x:Name="leftListView"
                             DockPanel.Dock="Bottom"
                             MouseDoubleClick="LeftListView_MouseDoubleClick"
+                            
                             >
                             <ListView.View>
                                 <GridView
                                     x:Name="leftGridView">
-                                    <GridViewColumn Header="Name" Width="100" DisplayMemberBinding="{Binding Name}"/>
-                                    <GridViewColumn Header="Type" Width="100" DisplayMemberBinding="{Binding Type}"/>
-                                    <GridViewColumn Header="Size" Width="100" DisplayMemberBinding="{Binding Size}"/>
+                                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}"/>
+                                    <GridViewColumn Header="Type" DisplayMemberBinding="{Binding Type}"/>
+                                    <GridViewColumn Header="Size" DisplayMemberBinding="{Binding Size}"/>
+                                    <GridViewColumn Header="Date" DisplayMemberBinding="{Binding Date}"/>
                                 </GridView>
                             </ListView.View>
                         </ListView>
@@ -116,9 +122,10 @@
                             <ListView.View>
                                 <GridView
                                     x:Name="rightGridView">
-                                    <GridViewColumn Header="Name" Width="100" DisplayMemberBinding="{Binding Name}"/>
-                                    <GridViewColumn Header="Type" Width="100" DisplayMemberBinding="{Binding Type}"/>
-                                    <GridViewColumn Header="Size" Width="100" DisplayMemberBinding="{Binding Size}"/>
+                                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}"/>
+                                    <GridViewColumn Header="Type" DisplayMemberBinding="{Binding Type}"/>
+                                    <GridViewColumn Header="Size" DisplayMemberBinding="{Binding Size}"/>
+                                    <GridViewColumn Header="Date" DisplayMemberBinding="{Binding Date}"/>
                                 </GridView>
                             </ListView.View>
                         </ListView>

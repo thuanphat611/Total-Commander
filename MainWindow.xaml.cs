@@ -75,7 +75,8 @@ namespace Assignment01
                     {
                         Name = item.Name,
                         Type = item is DirectoryInfo ? "Folder" : "File",
-                        Size = (item is FileInfo file) ? GetFileSizeString(file.Length) : ""
+                        Size = (item is FileInfo file) ? GetFileSizeString(file.Length) : "",
+                        Date = $"{item.CreationTime.Day}-{item.CreationTime.Month}-{item.CreationTime.Year}"
                     };
                     directoryView.Items.Add(listViewItem);
                 }
@@ -110,7 +111,8 @@ namespace Assignment01
                     {
                         Name = item.Name,
                         Type = item is DirectoryInfo ? "Folder" : "File",
-                        Size = (item is FileInfo file) ? GetFileSizeString(file.Length) : ""
+                        Size = (item is FileInfo file) ? GetFileSizeString(file.Length) : "",
+                        Date = $"{item.CreationTime.Day}-{item.CreationTime.Month}-{item.CreationTime.Year}"
                     };
                     directoryView.Items.Add(listViewItem);
                 }
@@ -149,7 +151,8 @@ namespace Assignment01
                             {
                                 Name = item.Name,
                                 Type = item is DirectoryInfo ? "Folder" : "File",
-                                Size = (item is FileInfo file) ? GetFileSizeString(file.Length) : ""
+                                Size = (item is FileInfo file) ? GetFileSizeString(file.Length) : "",
+                                Date = $"{item.CreationTime.Day}-{item.CreationTime.Month}-{item.CreationTime.Year}"
                             };
                             leftListView.Items.Add(listViewItem);
                         }
@@ -210,7 +213,8 @@ namespace Assignment01
                             {
                                 Name = item.Name,
                                 Type = item is DirectoryInfo ? "Folder" : "File",
-                                Size = (item is FileInfo file) ? GetFileSizeString(file.Length) : ""
+                                Size = (item is FileInfo file) ? GetFileSizeString(file.Length) : "",
+                                Date = $"{item.CreationTime.Day}-{item.CreationTime.Month}-{item.CreationTime.Year}"
                             };
                             rightListView.Items.Add(listViewItem);
                         }
@@ -246,5 +250,26 @@ namespace Assignment01
             }
         }
 
+        private void ListView_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            Grid directoryViews = bodyGrid as Grid;
+
+            if (directoryViews != null)
+            {
+                GridView leftGrid = leftGridView as GridView;
+                GridView rightGrid = rightGridView as GridView;
+                double width = directoryViews.ColumnDefinitions[0].ActualWidth;
+                double defaultScrollbarWidth = SystemParameters.VerticalScrollBarWidth;
+                double columnWidth = (width - defaultScrollbarWidth * 1.5) / 4;
+                leftGrid.Columns[0].Width = columnWidth;
+                leftGrid.Columns[1].Width = columnWidth;
+                leftGrid.Columns[2].Width = columnWidth;
+                leftGrid.Columns[3].Width = columnWidth;
+                rightGrid.Columns[0].Width = columnWidth;
+                rightGrid.Columns[1].Width = columnWidth;
+                rightGrid.Columns[2].Width = columnWidth;
+                rightGrid.Columns[3].Width = columnWidth;
+            }
+        }
     }
 }
