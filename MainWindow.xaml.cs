@@ -16,12 +16,22 @@ namespace Assignment01
     {
         string leftCurrentPath;
         string rightCurrentPath;
+        List<string> leftHistory;
+        List<string> rightHistory;
+        int leftHistoryIndex;
+        int rightHistoryIndex;
+        int lastClicked;
 
         public MainWindow()
         {
             InitializeComponent();
             leftCurrentPath = "";
             rightCurrentPath = "";
+            leftHistory = new List<string>();
+            rightHistory = new List<string>();
+            leftHistoryIndex = 0;
+            rightHistoryIndex = 0;
+            lastClicked = 0;
         }
 
         private string GetFileSizeString(long sizeInBytes)
@@ -123,15 +133,63 @@ namespace Assignment01
             }
         }
 
+        private void AddToHistory(int position, string path)
+        {
+            if (position == 0)
+                if (leftHistory.Count == 0)
+                {
+                    leftHistoryIndex = 0;
+                }
+                else
+                {
+                    if (leftHistoryIndex == leftHistory.Count - 1)
+                    {
+                        leftHistoryIndex = leftHistory.Count;
+                        leftHistory.Add(path);
+                    }
+                    else
+                    {
+                        leftHistory.RemoveRange(leftHistoryIndex + 1, leftHistory.Count - leftHistoryIndex - 1);
+                        leftHistory.Add(path);
+                        leftHistoryIndex = leftHistory.Count - 1;
+                    }
+                }
+            else
+                if (rightHistory.Count == 0)
+                {
+                    leftHistoryIndex = 0;
+                }
+                else
+                {
+                    if (rightHistoryIndex == rightHistory.Count - 1)
+                    {
+                        rightHistoryIndex = rightHistory.Count;
+                        rightHistory.Add(path);
+                    }
+                    else
+                    {
+                        rightHistory.RemoveRange(rightHistoryIndex + 1, rightHistory.Count - rightHistoryIndex - 1);
+                        rightHistory.Add(path);
+                        rightHistoryIndex = rightHistory.Count - 1;
+                    }
+                }
+        }
+
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ComboBox comboBox = (ComboBox)sender;
             DriveInfo selectedItem = (DriveInfo)comboBox.SelectedItem;
             string path = selectedItem.Name;
             if (comboBox.Name == "leftComboBox")
+            {
                 LoadDirectory(0, path);
+                AddToHistory(0, path);
+            }
             else
+            {
                 LoadDirectory(1, path);
+                AddToHistory(1, path);
+            }
         }
 
         private void ListView_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -149,9 +207,17 @@ namespace Assignment01
 
                 if (selectedItem.Type == "Folder")
                     if (directoryList.Name == "leftListView")
+                    {
                         LoadDirectory(0, path);
+                        AddToHistory (0, path);
+                        lastClicked = 0;
+                    }
                     else
+                    {
                         LoadDirectory(1, path);
+                        AddToHistory(1, path);
+                        lastClicked = 1;
+                    }
                 else if (selectedItem.Type == "File")
                     OpenFile(path);
             }
@@ -178,5 +244,23 @@ namespace Assignment01
                 rightGrid.Columns[3].Width = columnWidth;
             }
         }
+
+        private void ToParent(object sender, RoutedEventArgs e)
+        {
+            string path;
+            if (lastClicked == 0)
+                path = leftCurrentPath;
+            else 
+                path = rightCurrentPath;
+            string parentPath = System.IO.Path.GetDirectoryName(path);
+            if (parentPath != null)
+            {
+                LoadDirectory(lastClicked, parentPath);
+                AddToHistory(lastClicked, parentPath);
+            }  
+        }
+
+
+
     }
 }

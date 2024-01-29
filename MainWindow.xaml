@@ -12,11 +12,124 @@
         LastChildFill="True"
         >
         <WrapPanel
-            Height="60"
             DockPanel.Dock="Top"
             Background="FloralWhite"
+            VerticalAlignment="Center"
             >
-            
+            <Button
+                Background="FloralWhite"
+                x:Name="previousButton"
+                Margin="1,0,0,0"
+                >
+                <StackPanel
+                    Orientation="Vertical"
+                    VerticalAlignment="Center"
+                    >
+                    <Image Source="Images/previousButton.png" Width="20" Margin="10,5,10,5"/>
+                    <TextBlock
+                        TextAlignment="Center"
+                        Margin="10,0,10,5" Height="16" Width="50"
+                        >
+                        Previous
+                    </TextBlock>
+                </StackPanel>
+            </Button>
+
+            <Button
+                Background="FloralWhite"
+                x:Name="nextButton"
+                Margin="1,0,0,0"
+                >
+                <StackPanel
+                Orientation="Vertical"
+                VerticalAlignment="Center"
+                >
+                    <Image Source="Images/nextButton.png" Width="20" Margin="10,5,10,5"/>
+                    <TextBlock
+                        TextAlignment="Center"
+                        Margin="10,0,10,5" Height="16" Width="50"
+                        >
+                    Next
+                    </TextBlock>
+                </StackPanel>
+            </Button>
+
+            <Button
+                Background="FloralWhite"
+                x:Name="parentButton"
+                Margin="1,0,0,0"
+                Click="ToParent"
+                >
+                <StackPanel
+                Orientation="Vertical"
+                VerticalAlignment="Center"
+                >
+                    <Image Source="Images/parentFolderButton.png" Width="20" Margin="10,5,10,5"/>
+                    <TextBlock
+                        TextAlignment="Center"
+                        Margin="10,0,10,5" Height="16" Width="50"
+                        >
+                    Up
+                    </TextBlock>
+                </StackPanel>
+            </Button>
+
+            <Button
+                Background="FloralWhite"
+                x:Name="copyButton"
+                Margin="1,0,0,0"
+                >
+                <StackPanel
+                    Orientation="Vertical"
+                    VerticalAlignment="Center"
+                    >
+                    <Image Source="Images/copyButton.png" Width="20" Margin="10,5,10,5"/>
+                    <TextBlock
+                        TextAlignment="Center"
+                        Margin="10,0,10,5" Height="16" Width="50"
+                        >
+                    Copy
+                    </TextBlock>
+                </StackPanel>
+            </Button>
+
+            <Button
+                Background="FloralWhite"
+                x:Name="moveButton"
+                Margin="1,0,0,0"
+                >
+                <StackPanel
+                    Orientation="Vertical"
+                    VerticalAlignment="Center"
+                    >
+                    <Image Source="Images/moveButton.png" Width="20" Margin="10,5,10,5"/>
+                    <TextBlock
+                        TextAlignment="Center"
+                        Margin="10,0,10,5" Height="16" Width="50"
+                        >
+                    Move
+                    </TextBlock>
+                </StackPanel>
+            </Button>
+
+            <Button
+                Background="FloralWhite"
+                x:Name="deleteButton"
+                Margin="1,0,0,0"
+                >
+                <StackPanel
+                    Orientation="Vertical"
+                    VerticalAlignment="Center"
+                    >
+                    <Image Source="Images/deleteButton.png" Width="20" Margin="10,5,10,5"/>
+                    <TextBlock
+                        TextAlignment="Center"
+                        Margin="10,0,10,5" Height="16" Width="50"
+                        >
+                    Delete
+                    </TextBlock>
+                </StackPanel>
+            </Button>
         </WrapPanel>
 
         <Grid

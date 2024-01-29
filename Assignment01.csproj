@@ -8,4 +8,26 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Images\copyButton.png" />
+    <None Remove="Images\deleteButton.png" />
+    <None Remove="Images\moveButton.png" />
+    <None Remove="Images\nextButton.png" />
+    <None Remove="Images\parentFolderButton.png" />
+    <None Remove="Images\previousButton.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Fluent.Ribbon" Version="10.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\copyButton.png" />
+    <Resource Include="Images\deleteButton.png" />
+    <Resource Include="Images\moveButton.png" />
+    <Resource Include="Images\nextButton.png" />
+    <Resource Include="Images\parentFolderButton.png" />
+    <Resource Include="Images\previousButton.png" />
+  </ItemGroup>
+
 </Project>
