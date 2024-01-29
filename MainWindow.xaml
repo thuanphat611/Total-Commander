@@ -116,6 +116,7 @@
                 Background="FloralWhite"
                 x:Name="deleteButton"
                 Margin="1,0,0,0"
+                Click="Delete_Click"
                 >
                 <StackPanel
                     Orientation="Vertical"
@@ -177,7 +178,7 @@
                             x:Name="leftListView"
                             DockPanel.Dock="Bottom"
                             MouseDoubleClick="ListView_MouseDoubleClick"
-                            
+                            SelectionChanged="ListView_SelectionChanged"
                             >
                             <ListView.View>
                                 <GridView
@@ -229,6 +230,7 @@
                             x:Name="rightListView"
                             DockPanel.Dock="Bottom"
                             MouseDoubleClick="ListView_MouseDoubleClick"
+                            SelectionChanged="ListView_SelectionChanged"
                             >
                             <ListView.View>
                                 <GridView

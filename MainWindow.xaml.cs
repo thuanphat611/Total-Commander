@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections;
+using System.IO;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -126,6 +128,35 @@ namespace Assignment01
                     UseShellExecute = true
                 };
                 System.Diagnostics.Process.Start(psi);
+            }
+            catch (Exception ex)
+            {
+                //ignore
+            }
+        }
+        private void DeleteFile(string filePath)
+        {
+            try
+            {
+                if (File.Exists(filePath))
+                {
+                    File.Delete(filePath);
+                }
+            }
+            catch (Exception ex)
+            {
+                //ignore
+            }
+        }
+
+        static void DeleteFolder(string folderPath)
+        {
+            try
+            {
+                if (Directory.Exists(folderPath))
+                {
+                    Directory.Delete(folderPath, true);
+                }
             }
             catch (Exception ex)
             {
@@ -260,7 +291,48 @@ namespace Assignment01
             }  
         }
 
+        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ListView directoryList = (ListView)sender;
+            if (directoryList.Name == "leftListView")
+                lastClicked = 0;
+            else
+                lastClicked = 1;
+        }
 
+        private void Delete_Click(object sender, RoutedEventArgs e)
+        {
+            var result = MessageBox.Show($"Are you sure want to delete?", "Sure?", MessageBoxButton.YesNo);
+            if (result == MessageBoxResult.Yes)
+            {
+                ListView leftList = (ListView)leftListView;
+                ListView rightList = (ListView)rightListView;
+                if (lastClicked == 0)
+                    foreach(dynamic item in leftList.SelectedItems)
+                    {
+                        string itemPath = System.IO.Path.Combine(leftCurrentPath, item.Content.Name);
+                        if (item.Content.Type == "Folder")
+                            DeleteFolder(itemPath);
+                        else
+                            DeleteFile(itemPath);
+                    }
+                else
+                    foreach (dynamic item in rightList.SelectedItems)
+                    {
+                        string itemPath = System.IO.Path.Combine(rightCurrentPath, item.Content.Name);
+                        if (item.Content.Type == "Folder")
+                            DeleteFolder(itemPath);
+                        else
+                            DeleteFile(itemPath);
+                    }
 
+                string path;
+                if (lastClicked == 0)
+                    path = leftCurrentPath;
+                else
+                    path = rightCurrentPath;
+                LoadDirectory(lastClicked, path);
+            }
+        }
     }
 }
