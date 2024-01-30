@@ -149,6 +149,25 @@ namespace Assignment01
             }
         }
 
+        private void CopyFile(string sourceFilePath, string destinationFilePath)
+        {
+            if (File.Exists(destinationFilePath))
+            {
+                int suffix = 1;
+                string fileName = System.IO.Path.GetFileNameWithoutExtension(destinationFilePath);
+                string fileExtension = System.IO.Path.GetExtension(destinationFilePath);
+                string directory = System.IO.Path.GetDirectoryName(destinationFilePath);
+
+                do
+                {
+                    destinationFilePath = System.IO.Path.Combine(directory, $"{fileName} ({suffix}){fileExtension}");
+                    suffix++;
+                } while (File.Exists(destinationFilePath));
+            }
+
+            File.Copy(sourceFilePath, destinationFilePath);
+        }
+
         static void DeleteFolder(string folderPath)
         {
             try
@@ -326,13 +345,43 @@ namespace Assignment01
                             DeleteFile(itemPath);
                     }
 
-                string path;
-                if (lastClicked == 0)
-                    path = leftCurrentPath;
-                else
-                    path = rightCurrentPath;
-                LoadDirectory(lastClicked, path);
+                LoadDirectory(0, leftCurrentPath);
+                LoadDirectory(1, rightCurrentPath);
             }
         }
+
+        private void Copy_Click(object sender, RoutedEventArgs e)
+        {
+            ListView leftList = (ListView)leftListView;
+            ListView rightList = (ListView)rightListView;
+            if (lastClicked == 0)
+                foreach (dynamic item in leftList.SelectedItems)
+                {
+                    string itemPath = System.IO.Path.Combine(leftCurrentPath, item.Content.Name);
+                    string destinationItemPath = System.IO.Path.Combine(rightCurrentPath, item.Content.Name);
+                    if (item.Content.Type == "Folder")
+                    {
+
+                    }
+                    else
+                        CopyFile(itemPath, destinationItemPath);
+                }
+            else
+                foreach (dynamic item in rightList.SelectedItems)
+                {
+                    string itemPath = System.IO.Path.Combine(rightCurrentPath, item.Content.Name);
+                    string destinationItemPath = System.IO.Path.Combine(rightCurrentPath, item.Content.Name);
+                    if (item.Content.Type == "Folder")
+                    {
+
+                    }
+                    else
+                        CopyFile(itemPath, destinationItemPath);
+                }
+
+            LoadDirectory(0, leftCurrentPath);
+            LoadDirectory(1, rightCurrentPath);
+        }
+
     }
 }

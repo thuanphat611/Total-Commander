@@ -78,6 +78,7 @@
                 Background="FloralWhite"
                 x:Name="copyButton"
                 Margin="1,0,0,0"
+                Click="Copy_Click"
                 >
                 <StackPanel
                     Orientation="Vertical"
