@@ -34,6 +34,9 @@ namespace Assignment01
             leftHistoryIndex = 0;
             rightHistoryIndex = 0;
             lastClicked = 0;
+
+            leftListView.PreviewKeyDown += ListView_PreviewKeyDown;
+            rightListView.PreviewKeyDown += ListView_PreviewKeyDown;
         }
 
         private string GetFileSizeString(long sizeInBytes)
@@ -260,6 +263,37 @@ namespace Assignment01
                     {
                         LoadDirectory(0, path);
                         AddToHistory (0, path);
+                        lastClicked = 0;
+                    }
+                    else
+                    {
+                        LoadDirectory(1, path);
+                        AddToHistory(1, path);
+                        lastClicked = 1;
+                    }
+                else if (selectedItem.Type == "File")
+                    OpenFile(path);
+            }
+        }
+
+        private void ListView_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            ListView directoryList = (ListView)sender;
+            if (e.Key == Key.Enter)
+            {
+                dynamic selectedItem = ((ListViewItem)directoryList.SelectedItem).Content;
+                string path;
+
+                if (directoryList.Name == "leftListView")
+                    path = System.IO.Path.Combine(leftCurrentPath, selectedItem.Name);
+                else
+                    path = System.IO.Path.Combine(rightCurrentPath, selectedItem.Name);
+
+                if (selectedItem.Type == "Folder")
+                    if (directoryList.Name == "leftListView")
+                    {
+                        LoadDirectory(0, path);
+                        AddToHistory(0, path);
                         lastClicked = 0;
                     }
                     else
