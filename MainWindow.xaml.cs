@@ -152,6 +152,21 @@ namespace Assignment01
             }
         }
 
+        static void DeleteFolder(string folderPath)
+        {
+            try
+            {
+                if (Directory.Exists(folderPath))
+                {
+                    Directory.Delete(folderPath, true);
+                }
+            }
+            catch (Exception ex)
+            {
+                //ignore
+            }
+        }
+
         private void CopyFile(string sourceFilePath, string destinationFilePath)
         {
             if (File.Exists(destinationFilePath))
@@ -171,13 +186,29 @@ namespace Assignment01
             File.Copy(sourceFilePath, destinationFilePath);
         }
 
-        static void DeleteFolder(string folderPath)
+        private void CopyFolder(string sourcePath, string destinationPath)
         {
             try
             {
-                if (Directory.Exists(folderPath))
+                // Tạo thư mục đích nếu nó không tồn tại
+                if (!Directory.Exists(destinationPath))
                 {
-                    Directory.Delete(folderPath, true);
+                    Directory.CreateDirectory(destinationPath);
+                }
+
+                // Sao chép tất cả các tệp và thư mục từ nguồn đến đích
+                foreach (string filePath in Directory.GetFiles(sourcePath))
+                {
+                    string fileName = System.IO.Path.GetFileName(filePath);
+                    string destFilePath = System.IO.Path.Combine(destinationPath, fileName);
+                    File.Copy(filePath, destFilePath, true);
+                }
+
+                foreach (string subdirectoryPath in Directory.GetDirectories(sourcePath))
+                {
+                    string directoryName = System.IO.Path.GetFileName(subdirectoryPath);
+                    string destSubdirectoryPath = System.IO.Path.Combine(destinationPath, directoryName);
+                    CopyFolder(subdirectoryPath, destSubdirectoryPath);
                 }
             }
             catch (Exception ex)
@@ -394,9 +425,7 @@ namespace Assignment01
                     string itemPath = System.IO.Path.Combine(leftCurrentPath, item.Content.Name);
                     string destinationItemPath = System.IO.Path.Combine(rightCurrentPath, item.Content.Name);
                     if (item.Content.Type == "Folder")
-                    {
-
-                    }
+                        CopyFolder(itemPath, destinationItemPath);
                     else
                         CopyFile(itemPath, destinationItemPath);
                 }
@@ -406,9 +435,7 @@ namespace Assignment01
                     string itemPath = System.IO.Path.Combine(rightCurrentPath, item.Content.Name);
                     string destinationItemPath = System.IO.Path.Combine(rightCurrentPath, item.Content.Name);
                     if (item.Content.Type == "Folder")
-                    {
-
-                    }
+                        CopyFolder(itemPath, destinationItemPath);
                     else
                         CopyFile(itemPath, destinationItemPath);
                 }
