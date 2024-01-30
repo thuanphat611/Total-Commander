@@ -188,6 +188,12 @@ namespace Assignment01
 
         private void CopyFolder(string sourcePath, string destinationPath)
         {
+            if (sourcePath == System.IO.Path.GetDirectoryName(destinationPath))
+            {
+                MessageBox.Show("Cannot copy/move a folder into itself", "Info");
+                return;
+            }
+
             try
             {
                 // Tạo thư mục đích nếu nó không tồn tại
@@ -424,6 +430,7 @@ namespace Assignment01
                 {
                     string itemPath = System.IO.Path.Combine(leftCurrentPath, item.Content.Name);
                     string destinationItemPath = System.IO.Path.Combine(rightCurrentPath, item.Content.Name);
+                    
                     if (item.Content.Type == "Folder")
                         CopyFolder(itemPath, destinationItemPath);
                     else
@@ -433,7 +440,8 @@ namespace Assignment01
                 foreach (dynamic item in rightList.SelectedItems)
                 {
                     string itemPath = System.IO.Path.Combine(rightCurrentPath, item.Content.Name);
-                    string destinationItemPath = System.IO.Path.Combine(rightCurrentPath, item.Content.Name);
+                    string destinationItemPath = System.IO.Path.Combine(leftCurrentPath, item.Content.Name);
+
                     if (item.Content.Type == "Folder")
                         CopyFolder(itemPath, destinationItemPath);
                     else
@@ -443,6 +451,57 @@ namespace Assignment01
             LoadDirectory(0, leftCurrentPath);
             LoadDirectory(1, rightCurrentPath);
         }
+
+        private void Move_Click(object sender, RoutedEventArgs e)
+        {
+            if (leftCurrentPath == rightCurrentPath)
+                return;
+
+            ListView leftList = (ListView)leftListView;
+            ListView rightList = (ListView)rightListView;
+
+            if (lastClicked == 0)
+                foreach (dynamic item in leftList.SelectedItems)
+                {
+                    string itemPath = System.IO.Path.Combine(leftCurrentPath, item.Content.Name);
+                    string destinationItemPath = System.IO.Path.Combine(rightCurrentPath, item.Content.Name);
+                    if (item.Content.Type == "Folder")
+                    {
+                        CopyFolder(itemPath, destinationItemPath);
+                        if (itemPath != System.IO.Path.GetDirectoryName(destinationItemPath))
+                            DeleteFolder(itemPath);
+                    }
+                    else
+                    {
+                        CopyFile(itemPath, destinationItemPath);
+                        DeleteFile(itemPath);
+                    }
+                }
+            else
+                foreach (dynamic item in rightList.SelectedItems)
+                {
+                    string itemPath = System.IO.Path.Combine(rightCurrentPath, item.Content.Name);
+                    string destinationItemPath = System.IO.Path.Combine(leftCurrentPath, item.Content.Name);
+                    if (item.Content.Type == "Folder")
+                    {
+                        CopyFolder(itemPath, destinationItemPath);
+                        if (itemPath != System.IO.Path.GetDirectoryName(destinationItemPath))
+                            DeleteFolder(itemPath);
+                    }
+                    else
+                    {
+                        CopyFile(itemPath, destinationItemPath);
+                        DeleteFile(itemPath);
+                    }
+                }
+
+            LoadDirectory(0, leftCurrentPath);
+            LoadDirectory(1, rightCurrentPath);
+        }
+
+
+
+
 
     }
 }

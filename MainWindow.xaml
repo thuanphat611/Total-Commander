@@ -98,6 +98,7 @@
                 Background="FloralWhite"
                 x:Name="moveButton"
                 Margin="1,0,0,0"
+                Click="Move_Click"
                 >
                 <StackPanel
                     Orientation="Vertical"
