@@ -196,13 +196,11 @@ namespace Assignment01
 
             try
             {
-                // Tạo thư mục đích nếu nó không tồn tại
                 if (!Directory.Exists(destinationPath))
                 {
                     Directory.CreateDirectory(destinationPath);
                 }
 
-                // Sao chép tất cả các tệp và thư mục từ nguồn đến đích
                 foreach (string filePath in Directory.GetFiles(sourcePath))
                 {
                     string fileName = System.IO.Path.GetFileName(filePath);
@@ -226,16 +224,12 @@ namespace Assignment01
         private void AddToHistory(int position, string path)
         {
             if (position == 0)
-                if (leftHistory.Count == 0)
-                {
-                    leftHistoryIndex = 0;
-                }
-                else
+                if (leftHistory.Count != 0)
                 {
                     if (leftHistoryIndex == leftHistory.Count - 1)
                     {
-                        leftHistoryIndex = leftHistory.Count;
                         leftHistory.Add(path);
+                        leftHistoryIndex = leftHistory.Count - 1;
                     }
                     else
                     {
@@ -244,17 +238,18 @@ namespace Assignment01
                         leftHistoryIndex = leftHistory.Count - 1;
                     }
                 }
-            else
-                if (rightHistory.Count == 0)
+                else
                 {
+                    leftHistory.Add(path);
                     leftHistoryIndex = 0;
                 }
-                else
+            else
+                if (rightHistory.Count != 0)
                 {
                     if (rightHistoryIndex == rightHistory.Count - 1)
                     {
-                        rightHistoryIndex = rightHistory.Count;
                         rightHistory.Add(path);
+                        rightHistoryIndex = rightHistory.Count - 1;
                     }
                     else
                     {
@@ -262,6 +257,11 @@ namespace Assignment01
                         rightHistory.Add(path);
                         rightHistoryIndex = rightHistory.Count - 1;
                     }
+                }
+                else
+                {
+                    rightHistory.Add(path);
+                    leftHistoryIndex = 0;
                 }
         }
 
@@ -274,17 +274,25 @@ namespace Assignment01
             {
                 LoadDirectory(0, path);
                 AddToHistory(0, path);
+                lastClicked = 0;
             }
             else
             {
                 LoadDirectory(1, path);
                 AddToHistory(1, path);
+                lastClicked = 1;
             }
         }
 
         private void ListView_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             ListView directoryList = (ListView)sender;
+
+            if (directoryList.Name == "leftListView")
+                lastClicked = 0;
+            else
+                lastClicked = 1;
+
             if (directoryList.SelectedItem != null)
             {
                 dynamic selectedItem = ((ListViewItem)directoryList.SelectedItem).Content;
@@ -300,13 +308,11 @@ namespace Assignment01
                     {
                         LoadDirectory(0, path);
                         AddToHistory (0, path);
-                        lastClicked = 0;
                     }
                     else
                     {
                         LoadDirectory(1, path);
                         AddToHistory(1, path);
-                        lastClicked = 1;
                     }
                 else if (selectedItem.Type == "File")
                     OpenFile(path);
@@ -499,9 +505,112 @@ namespace Assignment01
             LoadDirectory(1, rightCurrentPath);
         }
 
+        private void Previous_Click(object sender, RoutedEventArgs e)
+        {
+            if (lastClicked == 0)
+            {
+                if (leftHistoryIndex == 0)
+                    return;
+                leftHistoryIndex--;
 
+                ComboBox comboBox = (ComboBox)leftComboBox;
+                DriveInfo selectedItem = (DriveInfo)comboBox.SelectedItem;
+                string comboBoxSelection = selectedItem.Name;
+                string previousDrive = System.IO.Path.GetPathRoot(leftHistory[leftHistoryIndex]);
 
+                if (previousDrive != comboBoxSelection)
+                {
+                    for (int i = 0; i < comboBox.Items.Count; i++)
+                    {
+                        DriveInfo item = (DriveInfo)comboBox.Items[i];
+                        if (item.Name == previousDrive)
+                        {
+                            comboBox.SelectedIndex = i;
+                            break;
+                        }
+                    }
+                }
+                LoadDirectory(0, leftHistory[leftHistoryIndex]);
+            }
+            else
+            {
+                if (rightHistoryIndex == 0)
+                    return;
+                rightHistoryIndex--;
 
+                ComboBox comboBox = (ComboBox)rightComboBox;
+                DriveInfo selectedItem = (DriveInfo)comboBox.SelectedItem;
+                string comboBoxSelection = selectedItem.Name;
+                string previousDrive = System.IO.Path.GetPathRoot(rightHistory[rightHistoryIndex]);
 
+                if (previousDrive != comboBoxSelection)
+                {
+                    for (int i = 0; i < comboBox.Items.Count; i++)
+                    {
+                        DriveInfo item = (DriveInfo)comboBox.Items[i];
+                        if (item.Name == previousDrive)
+                        {
+                            comboBox.SelectedIndex = i;
+                            break;
+                        }
+                    }
+                }
+                LoadDirectory(1, rightHistory[rightHistoryIndex]);
+            }
+        }
+
+        private void Next_Click(object sender, RoutedEventArgs e)
+        {
+            if (lastClicked == 0)
+            {
+                if (leftHistoryIndex == leftHistory.Count - 1)
+                    return;
+                leftHistoryIndex++;
+
+                ComboBox comboBox = (ComboBox)leftComboBox;
+                DriveInfo selectedItem = (DriveInfo)comboBox.SelectedItem;
+                string comboBoxSelection = selectedItem.Name;
+                string previousDrive = System.IO.Path.GetPathRoot(leftHistory[leftHistoryIndex]);
+
+                if (previousDrive != comboBoxSelection)
+                {
+                    for (int i = 0; i < comboBox.Items.Count; i++)
+                    {
+                        DriveInfo item = (DriveInfo)comboBox.Items[i];
+                        if (item.Name == previousDrive)
+                        {
+                            comboBox.SelectedIndex = i;
+                            break;
+                        }
+                    }
+                }
+                LoadDirectory(0, leftHistory[leftHistoryIndex]);
+            }
+            else
+            {
+                if (rightHistoryIndex == rightHistory.Count - 1)
+                    return;
+                rightHistoryIndex++;
+
+                ComboBox comboBox = (ComboBox)rightComboBox;
+                DriveInfo selectedItem = (DriveInfo)comboBox.SelectedItem;
+                string comboBoxSelection = selectedItem.Name;
+                string previousDrive = System.IO.Path.GetPathRoot(rightHistory[rightHistoryIndex]);
+
+                if (previousDrive != comboBoxSelection)
+                {
+                    for (int i = 0; i < comboBox.Items.Count; i++)
+                    {
+                        DriveInfo item = (DriveInfo)comboBox.Items[i];
+                        if (item.Name == previousDrive)
+                        {
+                            comboBox.SelectedIndex = i;
+                            break;
+                        }
+                    }
+                }
+                LoadDirectory(1, rightHistory[rightHistoryIndex]);
+            }
+        }
     }
 }

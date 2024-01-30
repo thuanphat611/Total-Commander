@@ -20,6 +20,7 @@
                 Background="FloralWhite"
                 x:Name="previousButton"
                 Margin="1,0,0,0"
+                Click="Previous_Click"
                 >
                 <StackPanel
                     Orientation="Vertical"
@@ -39,6 +40,7 @@
                 Background="FloralWhite"
                 x:Name="nextButton"
                 Margin="1,0,0,0"
+                Click="Next_Click"
                 >
                 <StackPanel
                 Orientation="Vertical"
