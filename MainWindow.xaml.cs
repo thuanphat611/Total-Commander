@@ -188,6 +188,8 @@ namespace Assignment01
 
         private void CopyFolder(string sourcePath, string destinationPath)
         {
+            string originPath = destinationPath;
+
             if (sourcePath == System.IO.Path.GetDirectoryName(destinationPath))
             {
                 MessageBox.Show("Cannot copy/move a folder into itself", "Info");
@@ -200,12 +202,22 @@ namespace Assignment01
                 {
                     Directory.CreateDirectory(destinationPath);
                 }
+                else
+                {
+                    int suffix = 1;
+                    do
+                    {
+                        destinationPath = originPath + $" ({suffix})";
+                        suffix++;
+                    } while (Directory.Exists(destinationPath));
+                    Directory.CreateDirectory(destinationPath);
+                }
 
                 foreach (string filePath in Directory.GetFiles(sourcePath))
                 {
                     string fileName = System.IO.Path.GetFileName(filePath);
                     string destFilePath = System.IO.Path.Combine(destinationPath, fileName);
-                    File.Copy(filePath, destFilePath, true);
+                    File.Copy(filePath, destFilePath);
                 }
 
                 foreach (string subdirectoryPath in Directory.GetDirectories(sourcePath))
