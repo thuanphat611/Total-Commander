@@ -23,7 +23,8 @@ namespace Assignment01
         int leftHistoryIndex;
         int rightHistoryIndex;
         int lastClicked;
-
+        bool leftComboBoxFlag;
+        bool rightComboBoxFlag;
         public MainWindow()
         {
             InitializeComponent();
@@ -34,6 +35,8 @@ namespace Assignment01
             leftHistoryIndex = 0;
             rightHistoryIndex = 0;
             lastClicked = 0;
+            leftComboBoxFlag = true;
+            rightComboBoxFlag = true;
 
             leftListView.PreviewKeyDown += ListView_PreviewKeyDown;
             rightListView.PreviewKeyDown += ListView_PreviewKeyDown;
@@ -284,12 +287,16 @@ namespace Assignment01
             string path = selectedItem.Name;
             if (comboBox.Name == "leftComboBox")
             {
+                if (!leftComboBoxFlag)
+                    return;
                 LoadDirectory(0, path);
                 AddToHistory(0, path);
                 lastClicked = 0;
             }
             else
             {
+                if (!rightComboBoxFlag)
+                    return;
                 LoadDirectory(1, path);
                 AddToHistory(1, path);
                 lastClicked = 1;
@@ -524,7 +531,6 @@ namespace Assignment01
                 if (leftHistoryIndex == 0)
                     return;
                 leftHistoryIndex--;
-
                 ComboBox comboBox = (ComboBox)leftComboBox;
                 DriveInfo selectedItem = (DriveInfo)comboBox.SelectedItem;
                 string comboBoxSelection = selectedItem.Name;
@@ -537,7 +543,9 @@ namespace Assignment01
                         DriveInfo item = (DriveInfo)comboBox.Items[i];
                         if (item.Name == previousDrive)
                         {
+                            leftComboBoxFlag = false;
                             comboBox.SelectedIndex = i;
+                            leftComboBoxFlag = true;
                             break;
                         }
                     }
@@ -562,7 +570,9 @@ namespace Assignment01
                         DriveInfo item = (DriveInfo)comboBox.Items[i];
                         if (item.Name == previousDrive)
                         {
+                            rightComboBoxFlag = false;
                             comboBox.SelectedIndex = i;
+                            rightComboBoxFlag = true;
                             break;
                         }
                     }
@@ -591,7 +601,9 @@ namespace Assignment01
                         DriveInfo item = (DriveInfo)comboBox.Items[i];
                         if (item.Name == previousDrive)
                         {
+                            leftComboBoxFlag = false;
                             comboBox.SelectedIndex = i;
+                            leftComboBoxFlag = true;
                             break;
                         }
                     }
@@ -616,7 +628,9 @@ namespace Assignment01
                         DriveInfo item = (DriveInfo)comboBox.Items[i];
                         if (item.Name == previousDrive)
                         {
+                            rightComboBoxFlag = false;
                             comboBox.SelectedIndex = i;
+                            rightComboBoxFlag = true;
                             break;
                         }
                     }
