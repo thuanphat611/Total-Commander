@@ -550,6 +550,8 @@ namespace Assignment01
                         }
                     }
                 }
+                if (!Directory.Exists(leftHistory[leftHistoryIndex]))
+                    leftHistoryIndex--;
                 LoadDirectory(0, leftHistory[leftHistoryIndex]);
             }
             else
@@ -577,6 +579,8 @@ namespace Assignment01
                         }
                     }
                 }
+                if (!Directory.Exists(rightHistory[rightHistoryIndex]))
+                    rightHistoryIndex--;
                 LoadDirectory(1, rightHistory[rightHistoryIndex]);
             }
         }
@@ -608,6 +612,8 @@ namespace Assignment01
                         }
                     }
                 }
+                if (!Directory.Exists(leftHistory[leftHistoryIndex]))
+                    leftHistoryIndex++;
                 LoadDirectory(0, leftHistory[leftHistoryIndex]);
             }
             else
@@ -635,6 +641,8 @@ namespace Assignment01
                         }
                     }
                 }
+                if (!Directory.Exists(rightHistory[rightHistoryIndex]))
+                    rightHistoryIndex++;
                 LoadDirectory(1, rightHistory[rightHistoryIndex]);
             }
         }
